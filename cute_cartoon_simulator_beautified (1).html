@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#8e7cff">
+<meta name="description" content="Play Cute Cartoon Simulator — collect coins, upgrade, hatch pets and unlock cute worlds!">
+<title>Cute Cartoon Simulator</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
+:root{--purple:#8974ff;--pink:#ff83b8;--ink:#46335f;--cream:#fffaf0;--green:#8de8b8;--shadow:#6555a6}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:Nunito,system-ui,sans-serif;background:linear-gradient(160deg,#b9edff,#f2eaff 52%,#ffe1ef);overflow-x:hidden}
+header{max-width:1120px;margin:auto;padding:20px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:clamp(21px,4vw,34px);font-weight:900;letter-spacing:-1px}.brand span{color:#ff5f9f}.coinbar{background:#fff;border:3px solid #fff;border-radius:999px;padding:9px 16px;font-weight:900;box-shadow:0 5px 0 #d4c8ef;font-size:18px}
+main{max-width:1120px;margin:auto;padding:10px 18px 30px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(285px,1fr);gap:18px}
+.card{background:#ffffffd9;border:3px solid white;border-radius:26px;padding:16px;box-shadow:0 9px 0 #8d7bc522}
+.scene{height:clamp(330px,48vw,490px);max-height:490px;position:relative;overflow:hidden;border-radius:21px;border:3px solid #fff;background:linear-gradient(#82d9ff 0%,#c8f2ff 61%,#a7edc1 61%,#81dfa5 100%)}
+.sun{position:absolute;right:7%;top:7%;font-size:clamp(38px,7vw,65px);filter:drop-shadow(0 4px #ffdc8b)}
+.cloud{position:absolute;font-size:clamp(35px,6vw,55px);opacity:.9;animation:drift 9s ease-in-out infinite}.cloud.a{top:13%;left:9%}.cloud.b{top:25%;left:62%;animation-delay:-4s}
+@keyframes drift{50%{transform:translateX(18px)}}
+.hill{position:absolute;bottom:-75px;width:115%;height:170px;left:-8%;border-radius:50%;background:#70d391}.hill.back{bottom:-100px;left:20%;background:#9ce9a7}
+.flower{position:absolute;bottom:10%;font-size:27px}.f1{left:10%}.f2{right:13%}.f3{left:27%;bottom:4%}
+.avatar{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:clamp(105px,17vw,170px);cursor:pointer;user-select:none;filter:drop-shadow(0 12px 0 #4c936544);animation:bounce 2s ease-in-out infinite;z-index:2}
+@keyframes bounce{0%,100%{transform:translate(-50%,-50%) translateY(0) rotate(-2deg)}50%{transform:translate(-50%,-50%) translateY(-12px) rotate(2deg)}}
+.avatar:active{transform:translate(-50%,-50%) scale(.92)}
+.bubble{position:absolute;z-index:4;color:#ff4594;font-weight:900;font-size:25px;pointer-events:none;text-shadow:0 2px white;animation:rise .75s ease-out forwards}
+@keyframes rise{to{opacity:0;transform:translateY(-75px) scale(1.35)}}
+.topline{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:13px 0}.stat{padding:8px 13px;border-radius:999px;background:#f1eaff;border:2px solid white;font-weight:900}
+button{font:900 15px Nunito,system-ui;border:0;border-radius:16px;padding:13px 15px;cursor:pointer;color:#52365f;background:var(--pink);box-shadow:0 5px 0 #dc6099;transition:transform .08s,filter .1s}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 #dc6099}button:disabled{opacity:.48;cursor:default}
+.primary{width:100%;font-size:18px;padding:15px;background:linear-gradient(90deg,#ff9dc7,#ff83b8);box-shadow:0 5px 0 #d9609b}.purple{background:#b9a6ff;box-shadow:0 5px 0 #8873ce}.mint{background:#a1f0c7;box-shadow:0 5px 0 #68c593}.blue{background:#a6e6ff;box-shadow:0 5px 0 #70b9d8}
+h2{margin:0 0 8px;font-size:20px}.section{padding:4px 0 13px}.muted{font-size:13px;line-height:1.45;color:#76688e;margin:5px 0 10px}
+.petbox{display:flex;align-items:center;gap:12px;background:#fff5fb;border:2px dashed #f5b3d2;border-radius:17px;padding:10px;margin:9px 0}.peticon{font-size:40px}.petname{font-weight:900}.petbonus{font-size:12px;color:#8d6e9e}
+.worlds{display:grid;grid-template-columns:1fr 1fr;gap:9px}.world{border:2px solid white;border-radius:16px;background:#f4efff;padding:11px;font-size:13px;font-weight:900}.world .emoji{font-size:24px;display:block;margin-bottom:3px}.world.locked{filter:saturate(.6);background:#f4f2f8}.world.unlocked{background:#e5ffef;border-color:#a3ebbd}
+hr{border:0;border-top:2px dashed #d9c9ee;margin:14px 0}.notice{min-height:20px;text-align:center;font-size:13px;font-weight:800;color:#8a65bb;margin:10px 0 0}
+footer{text-align:center;padding:0 15px 22px;font-size:12px;color:#8878a5}
+@media(max-width:720px){main{grid-template-columns:1fr;padding:8px 12px 24px}header{padding:16px 12px}.scene{height:340px}.avatar{font-size:125px}.card{padding:12px}.brand{font-size:23px}}
+</style>
+</head>
+<body>
+<header><div class="brand">🌈 Cute <span>Cartoon</span> Simulator</div><div class="coinbar">🪙 <span id="coins">0</span></div></header>
+<main>
+<section class="card">
+ <div class="scene" id="scene">
+  <div class="sun">☀️</div><div class="cloud a">☁️</div><div class="cloud b">☁️</div>
+  <div class="hill back"></div><div class="hill"></div>
+  <div class="flower f1">🌼</div><div class="flower f2">🌷</div><div class="flower f3">🌸</div>
+  <div class="avatar" id="avatar" title="Tap the bunny!">🐰</div>
+ </div>
+ <div class="topline"><div class="stat">⚡ Power <span id="power">1</span></div><div class="stat">🔁 Rebirth <span id="rebirths">0</span></div><div class="stat">🌎 <span id="worldName">Grass World</span></div></div>
+ <button class="primary" id="tapBtn">✨ TAP TO EARN ✨</button>
+ <button class="purple" style="width:100%;margin-top:10px" id="upgradeBtn">Upgrade Power · 25 coins</button>
+</section>
+<aside class="card">
+ <div class="section"><h2>🐾 Your Buddy</h2><p class="muted">Your pet helps you collect extra coins on every tap.</p>
+  <div class="petbox"><span class="peticon" id="petIcon">🐣</span><div><div class="petname" id="petName">Little Chick</div><div class="petbonus">Coin bonus: +1</div></div></div>
+  <button class="mint" style="width:100%" id="eggBtn">🥚 Hatch a Pet · 100 coins</button>
+ </div>
+ <hr>
+ <div class="section"><h2>🗺️ Explore Worlds</h2><p class="muted">Unlock lovely new places as you grow.</p>
+  <div class="worlds">
+   <div class="world unlocked" id="w0"><span class="emoji">🌱</span>Grass World<br><small>Unlocked</small></div>
+   <div class="world locked" id="w1"><span class="emoji">🏜️</span>Desert<br><small>500 coins</small></div>
+   <div class="world locked" id="w2"><span class="emoji">❄️</span>Ice World<br><small>2,500 coins</small></div>
+   <div class="world locked" id="w3"><span class="emoji">🌌</span>Galaxy<br><small>10,000 coins</small></div>
+  </div><button class="blue" style="width:100%;margin-top:10px" id="worldBtn">Unlock next world</button>
+ </div>
+ <hr>
+ <div class="section"><h2>🔄 Rebirth</h2><p class="muted">Start fresh with a bigger coin multiplier. Your rebirth count stays!</p><button class="pink" style="width:100%" id="rebirthBtn">Rebirth · 5,000 coins</button></div>
+ <div class="notice" id="message" aria-live="polite">Welcome, little explorer! 🌟</div>
+</aside>
+</main>
+<footer>Made with 💖 · Progress saves automatically in this browser</footer>
+<script>
+const base={coins:0,power:1,upgradeCost:25,rebirths:0,petName:"Little Chick",petIcon:"🐣",petBonus:1,world:0};
+let d={...base};try{d={...d,...JSON.parse(localStorage.getItem("cuteCartoonSave")||"{}")}}catch(e){}
+const el=id=>document.getElementById(id), fmt=n=>Math.floor(n).toLocaleString();
+function save(){try{localStorage.setItem("cuteCartoonSave",JSON.stringify(d))}catch(e){}}
+function say(t){el("message").textContent=t}
+function update(){
+ el("coins").textContent=fmt(d.coins);el("power").textContent=d.power;el("rebirths").textContent=d.rebirths;
+ el("upgradeBtn").textContent=`⚡ Upgrade Power · ${fmt(d.upgradeCost)} coins`;
+ el("petIcon").textContent=d.petIcon;el("petName").textContent=d.petName;
+ el("petName").nextElementSibling.textContent="Coin bonus: +"+d.petBonus;
+ el("rebirthBtn").textContent=`🔄 Rebirth · ${fmt(5000*(d.rebirths+1))} coins`;
+ const names=["Grass World","Desert","Ice World","Galaxy"];el("worldName").textContent=names[d.world]||"Galaxy";
+ for(let i=0;i<4;i++){el("w"+i).className="world "+(i<=d.world?"unlocked":"locked");el("w"+i).querySelector("small").textContent=i<=d.world?"Unlocked":fmt([0,500,2500,10000][i])+" coins"}
+ el("worldBtn").disabled=d.world>=3;el("worldBtn").textContent=d.world>=3?"🌟 All worlds unlocked!":"Unlock next world · "+fmt([500,2500,10000][d.world])+" coins";
+}
+function earn(e){
+ const gain=(d.power+d.petBonus)*(d.rebirths+1);d.coins+=gain;
+ const r=el("scene").getBoundingClientRect(),x=e&&e.clientX?e.clientX-r.left:r.width/2,y=e&&e.clientY?e.clientY-r.top:r.height/2;
+ let b=document.createElement("div");b.className="bubble";b.textContent="+"+gain;b.style.left=x+"px";b.style.top=y+"px";el("scene").appendChild(b);setTimeout(()=>b.remove(),760);
+ update();save();
+}
+el("tapBtn").onclick=e=>earn(e);el("avatar").onclick=e=>earn(e);
+el("upgradeBtn").onclick=()=>{if(d.coins<d.upgradeCost){say("Collect a few more coins first! 🪙");return}d.coins-=d.upgradeCost;d.power++;d.upgradeCost=Math.ceil(d.upgradeCost*1.65);say("Power upgraded! You're getting stronger ⚡");update();save()};
+el("eggBtn").onclick=()=>{if(d.coins<100){say("You need 100 coins for a pet egg! 🥚");return}d.coins-=100;const pets=[["Little Chick","🐣",1],["Sleepy Kitty","🐱",3],["Happy Puppy","🐶",5],["Magic Unicorn","🦄",10],["Tiny Dragon","🐲",15]];let p=pets[Math.floor(Math.random()*pets.length)];d.petName=p[0];d.petIcon=p[1];d.petBonus=p[2];say("Yay! "+p[0]+" joined your team! 🎉");update();save()};
+el("worldBtn").onclick=()=>{let cost=[500,2500,10000][d.world];if(d.world>=3)return;if(d.coins<cost){say("Not enough coins to unlock this world yet!");return}d.coins-=cost;d.world++;say("New world unlocked! Let's explore 🌍");update();save()};
+el("rebirthBtn").onclick=()=>{let cost=5000*(d.rebirths+1);if(d.coins<cost){say("You need "+fmt(cost)+" coins to rebirth.");return}d.coins=0;d.power=1;d.upgradeCost=25;d.rebirths++;say("Rebirth complete! Your multiplier is now x"+(d.rebirths+1)+" 🔁");update();save()};
+update();
+</script>
+</body></html>
